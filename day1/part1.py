@@ -5,7 +5,7 @@ def find_digit():
     with open('input.txt') as f:
         lines = f.read().splitlines()
 
-    digits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
+    digits = "123456789"
     numbers_together = []
 
     for line in lines:  # line:str, lines: lst[line:str]
