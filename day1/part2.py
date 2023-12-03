@@ -8,27 +8,26 @@ def find_all(needle, haystack):
 
 def convert_digit(word):
     txt_trans = {'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5, 'six': 6, 'seven': 7, 'eight': 8, 'nine': 9}
-    if word in txt_trans.keys():  # word: is key of word dict
+    if word.isdigit():
+        return word
+    elif word in txt_trans.keys():  # word: is key of word dict
         return str(txt_trans[word])
 
 
 def find_digit():
     with open('input.txt') as f:
         lines = f.read().splitlines()
-        numbers = []
-        for line in lines:  # line:str, lines: lst[line:str]
-            digits_txt = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"]
-            numbers_together = {}
-            for word in digits_txt:
-                all = find_all(word, line)
-                for idx in all:
-                    numbers_together[idx] = convert_digit(word)
 
-            for idx, char in enumerate(line):
-                if char.isdigit():
-                    numbers_together[idx] = char
-            numbers.append(numbers_together)
-
+    numbers = []
+    for line in lines:  # line:str, lines: lst[line:str]
+        digits_txt = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "1", "2", "3", "4",
+                      "5", "6", "7", "8", "9"]
+        numbers_together = {}
+        for word in digits_txt:
+            all = find_all(word, line)
+            for idx in all:
+                numbers_together[idx] = convert_digit(word)
+        numbers.append(numbers_together)
     return numbers
 
 def sum_digits(lst_numbers):
