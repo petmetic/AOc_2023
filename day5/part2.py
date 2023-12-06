@@ -97,6 +97,14 @@ class SeedRange:
     length: int
 
 
+@dataclass
+class SeedLocation:
+    min_s: int
+    mid_s: int
+    max_s: int
+    sl: int
+
+
 def bisec_mdm(seeds, lines):
     seed_ranges = [SeedRange(start=seeds[i], length=seeds[i + 1]) for i in range(0, len(seeds), 2)]
     ic(seed_ranges)
@@ -107,24 +115,20 @@ def bisec_mdm(seeds, lines):
 
         ic('#1', min_s, mid_s, max_s, seed_range)
 
-        locations = []
-        location_min_s = almanac(lines, min_s)
-        location_mid_s = almanac(lines, mid_s)
-        location_max_s = almanac(lines, max_s)
-        ic('#2', location_min_s, location_mid_s, location_max_s)
+        SeedLocation.min_s = almanac(lines, min_s)
+        SeedLocation.mid_s = almanac(lines, mid_s)
+        SeedLocation.max_s = almanac(lines, max_s)
 
-        locations.append(location_max_s)
-        locations.append(location_min_s)
-        locations.append(location_mid_s)
-        ic(locations)
-        locations.sort()  # smallest location [0]
-        ic('ord_locations', locations)
+        ic('#2', SeedLocation.min_s, SeedLocation.mid_s, SeedLocation.max_s, SeedLocation.seed)
 
-        group = (locations[0], locations[1])
-        ic(group)
-        min_s, mid_s, max_s = get_bisec_values(seed_range)
+        sorted_seed_locations = sorted([SeedLocation], key=lambda: sl.location)
 
-        ic('#3', min_s, mid_s, max_s, group)
+        # locations.append(location_max_s)
+        # locations.append(location_min_s)
+        # locations.append(location_mid_s)
+        # ic(locations)
+        # locations.sort()  # smallest location [0]
+        # ic('ord_locations', locations)
 
     return seeds
 
