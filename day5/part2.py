@@ -1,6 +1,8 @@
 from icecream import ic
 import re
 
+from dataclasses import dataclass
+
 
 def parse_input():
     lines = open("test_input.txt").read().splitlines()
@@ -81,23 +83,29 @@ def almanac(lines, seeds):
     return location_min
 
 
-def get_bisec_values(group):
-    min_seed, r = group
-    mid_s = [int((min_seed + min_seed + r) / 2)]
-    max_s = [min_seed + r]
-    min_s = [min_seed]
+def get_bisec_values(seed_range):
+    mid_s = [round((seed_range.start + seed_range.start + seed_range.length) / 2)]
+    max_s = [seed_range.start + seed_range.length]
+    min_s = [seed_range.start]
 
     return min_s, mid_s, max_s
 
 
-def bisec_mdm(seeds, lines):
-    seed_range = [(seeds[i], seeds[i + 1]) for i in range(0, len(seeds), 2)]
-    ic(seed_range)
-    for group in seed_range:
-        ic('initial group', group)
-        min_s, mid_s, max_s = get_bisec_values(group)
+@dataclass
+class SeedRange:
+    start: int
+    length: int
 
-        ic('#1', min_s, mid_s, max_s, group)
+
+def bisec_mdm(seeds, lines):
+    seed_ranges = [SeedRange(start=seeds[i], length=seeds[i + 1]) for i in range(0, len(seeds), 2)]
+    ic(seed_ranges)
+
+    for seed_range in seed_ranges:
+        ic('initial group', seed_range)
+        min_s, mid_s, max_s = get_bisec_values(seed_range)
+
+        ic('#1', min_s, mid_s, max_s, seed_range)
 
         locations = []
         location_min_s = almanac(lines, min_s)
@@ -114,7 +122,7 @@ def bisec_mdm(seeds, lines):
 
         group = (locations[0], locations[1])
         ic(group)
-        min_s, mid_s, max_s = get_bisec_values(group)
+        min_s, mid_s, max_s = get_bisec_values(seed_range)
 
         ic('#3', min_s, mid_s, max_s, group)
 
